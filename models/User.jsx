@@ -23,6 +23,13 @@ const userSchema = new mongoose.Schema(
     profileImage: {
       type: String,
     },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,
