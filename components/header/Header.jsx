@@ -14,11 +14,13 @@ import {
 import Link from "next/link";
 import UserAvatar from "./UserAvatar";
 import { BsPencilSquare } from "react-icons/bs";
+import { usePathname } from "next/navigation";
 // import { useSelector } from "react-redux";
 
 export default function Header() {
   // const isAuthenticated = useSelector((state) => state.token !== null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const menuItems = [
     "Profile",
@@ -33,26 +35,31 @@ export default function Header() {
     "Log Out",
   ];
 
-  return (
-    <Navbar
-      shouldHideOnScroll
-      onMenuOpenChange={setIsMenuOpen}
-      classNames={{
-        base: "border-b",
-        wrapper: "max-w-[1250px]",
-      }}
-    >
-      <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
-        />
-        <NavbarBrand as={Link} href="/">
-          <p className="font-bold text-inherit">EaxyAUTH</p>
-        </NavbarBrand>
-      </NavbarContent>
+  const hideMainHeader =
+    pathname === "/verifyemail" || pathname === "/reset-password";
 
-      {/* <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+  return (
+    <>
+      {!hideMainHeader && (
+        <Navbar
+          shouldHideOnScroll
+          onMenuOpenChange={setIsMenuOpen}
+          classNames={{
+            base: "border-b",
+            wrapper: "max-w-[1250px]",
+          }}
+        >
+          <NavbarContent>
+            <NavbarMenuToggle
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              className="sm:hidden"
+            />
+            <NavbarBrand as={Link} href="/">
+              <p className="font-bold text-inherit">EaxyAUTH</p>
+            </NavbarBrand>
+          </NavbarContent>
+
+          {/* <NavbarContent className="hidden gap-4 sm:flex" justify="center">
         <NavbarItem>
           <Link color="foreground" href="#">
             Features
@@ -69,44 +76,41 @@ export default function Header() {
           </Link>
         </NavbarItem>
       </NavbarContent> */}
-      <NavbarContent justify="end">
-        {/* <UserAvatar /> */}
-        <>
-          <NavbarItem className="hidden lg:flex">
-            <Link href="login">Login</Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Button
-              as={Link}
-              color="primary"
-              href="/signup"
-              variant="flat"
-            >
-              Sign Up
-            </Button>
-          </NavbarItem>
-        </>
-      </NavbarContent>
-      <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-              }
-              className="w-full"
-              href="#"
-              size="lg"
-            >
-              {item}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-      </NavbarMenu>
-    </Navbar>
+          <NavbarContent justify="end">
+            {/* <UserAvatar /> */}
+            <>
+              <NavbarItem className="hidden lg:flex">
+                <Link href="/">Login</Link>
+              </NavbarItem>
+              <NavbarItem>
+                <Button as={Link} color="primary" href="/signup" variant="flat">
+                  Sign Up
+                </Button>
+              </NavbarItem>
+            </>
+          </NavbarContent>
+          <NavbarMenu>
+            {menuItems.map((item, index) => (
+              <NavbarMenuItem key={`${item}-${index}`}>
+                <Link
+                  color={
+                    index === 2
+                      ? "primary"
+                      : index === menuItems.length - 1
+                        ? "danger"
+                        : "foreground"
+                  }
+                  className="w-full"
+                  href="#"
+                  size="lg"
+                >
+                  {item}
+                </Link>
+              </NavbarMenuItem>
+            ))}
+          </NavbarMenu>
+        </Navbar>
+      )}
+    </>
   );
 }

@@ -6,8 +6,9 @@ export async function PUT(request, { params }) {
   const { id } = params;
   const { name, email, profileImage } = await request.json();
 
+  await connectMongoDB()
+
   try {
-    await connectMongoDB();
 
     const user = await User.findByIdAndUpdate(
       id,

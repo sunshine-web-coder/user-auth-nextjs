@@ -1,11 +1,14 @@
 "use client";
 
 import { Button, Checkbox, Input } from "@nextui-org/react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export default function SignUpForm() {
   const {
@@ -18,7 +21,27 @@ export default function SignUpForm() {
   const toggleVisibility = () => setIsVisible(!isVisible);
   const router = useRouter();
 
-  const onSubmit = (data) => console.log(data);
+  const loginUserMutation = useMutation({
+    mutationFn: (formData) => {
+      return axios.post(`http://localhost:3000/api/user/login`, formData);
+    },
+    onSuccess: () => {
+      toast.success("You logged in successfully!");
+    },
+    onError: (error) => {
+      if (error?.response?.data === "Invalid credentials") {
+        toast.error("Invalid email or password.");
+      } else {
+        // Network error
+        console.error(error);
+        toast.error("Network error creating user");
+      }
+    },
+  });
+
+  const onSubmit = (data) => {
+    loginUserMutation.mutate(data);
+  };
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -28,7 +51,10 @@ export default function SignUpForm() {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               Log in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div>
                 <Input
                   {...register("email", {
@@ -83,16 +109,20 @@ export default function SignUpForm() {
                     Remember me
                   </Checkbox>
                 </div>
-                <Link href="/forgot-password" className="text-[#005AC2] hover:underline">
+                <Link
+                  href="/forgot-password"
+                  className="text-[#005AC2] hover:underline"
+                >
                   Forgot password?
                 </Link>
               </div>
               <Button
                 size="lg"
                 type="submit"
-                className="w-full rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className={`w-full rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                isDisabled={loginUserMutation.isPending}
               >
-                Login
+                {loginUserMutation.isPending ? "Logging in..." : "Login"}
               </Button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}

@@ -9,6 +9,10 @@ export async function GET(request) {
     // Fetch all users from the database
     const users = await User.find({}, { password: 0 }); // Exclude the password field
 
+    if(!users){
+      return NextResponse.json ({message: 'Users not found!'}, {status: 400});
+    }
+
     // Return the list of users in the response
     return NextResponse.json(users, { status: 200 });
   } catch (error) {

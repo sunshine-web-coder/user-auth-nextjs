@@ -2,17 +2,11 @@
 
 import React, {useState} from 'react';
 import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Avatar,
   Popover,
   PopoverTrigger,
   PopoverContent,
-  User,
   Switch,
-  DropdownSection,
   Button,
 } from '@nextui-org/react';
 import {HiSun, HiMoon} from 'react-icons/hi2';

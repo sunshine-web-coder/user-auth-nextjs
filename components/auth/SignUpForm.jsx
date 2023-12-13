@@ -30,7 +30,8 @@ export default function SignUpForm() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries("userData");
-      toast.success("Registered successfully!");
+      toast.success("You registered successfully! Check your email for a verification link.");
+      router.push("/")
     },
     onError: (error) => {
       if (error?.response?.data?.message === "User already exists.") {
@@ -38,7 +39,7 @@ export default function SignUpForm() {
       } else {
         // Network error
         console.error(error);
-        toast.error("Network error creating post");
+        toast.error("Network error creating user");
       }
     },
   });
@@ -135,12 +136,12 @@ export default function SignUpForm() {
                   : "Create an account"}
               </Button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?
+                Already have an account?&nbsp;
                 <Link
                   href="/"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Login here
+                   Login here
                 </Link>
               </p>
             </form>

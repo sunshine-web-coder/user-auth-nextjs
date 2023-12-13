@@ -1,5 +1,3 @@
-// models/User.js
-
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -11,6 +9,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
     },
     slug: {
       type: String,
@@ -27,8 +26,21 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    verificationToken: {
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    verifyToken: {
       type: String,
+    },
+    verifyTokenExpiry: {
+      type: Date,
+    },
+    forgotPasswordToken: {
+      type: String,
+    },
+    forgotPasswordExpiry: {
+      type: Date,
     },
   },
   {
