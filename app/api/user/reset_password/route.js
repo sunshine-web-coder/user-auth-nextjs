@@ -7,36 +7,45 @@ export async function POST(request) {
   await connectMongoDB();
 
   try {
-    const reqBody = await request.json();
-
-    const { token, password } = reqBody;
-
+    const { token, password } = await request.json();
+    
+    // Find the user by the reset token
     const user = await User.findOne({
       forgotPasswordToken: token,
-      forgotPasswordExpiry:  { $gt: Date.now() }, // Use Date object for comparison
+      forgotPasswordExpiry: { $gt: Date.now() },
     });
 
-    console.log(user);
-
     if (!user) {
-      return NextResponse.json({ message: "Invalid or expired token" }, { status: 400 });
+      console.error("Invalid or expired reset token:", {
+        token,
+        currentTime: Date.now(),
+        userExpiry: user?.forgotPasswordExpiry,
+      });
+    
+      return NextResponse.json(
+        { message: "Invalid or expired reset token" },
+        { status: 400 },
+      );
     }
 
-    // Update the user's password
+    // Hash the new password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update the user's password
     user.password = hashedPassword;
     user.forgotPasswordToken = undefined;
     user.forgotPasswordExpiry = undefined;
-
-    // Save the user changes
     await user.save();
-
+    
     return NextResponse.json(
-      { message: "Password reset successfully!" },
+      { message: "Password reset successful" },
       { status: 200 },
     );
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Error resetting password:", error);
+    return NextResponse.json(
+      { message: "An error occurred while resetting the password" },
+      { status: 500 },
+    );
   }
 }

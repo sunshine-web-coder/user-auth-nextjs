@@ -2,8 +2,6 @@
 
 import { registerUser } from "@/constants/ApiService";
 import { Button, Checkbox, Input } from "@nextui-org/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -21,33 +19,30 @@ export default function SignUpForm() {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const queryClient = useQueryClient();
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      await registerUser(data);
 
-  const registerUserMutation = useMutation({
-    mutationFn: (formData) => {
-      return axios.post(`http://localhost:3000/api/user/register`, formData);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries("userData");
-      toast.success("You registered successfully! Check your email for a verification link.");
-      router.push("/")
-    },
-    onError: (error) => {
-      if (error?.response?.data?.message === "User already exists.") {
-        toast.error("Email is already in use. Please use a different email.");
+      toast.success(
+        "You registered successfully! Check your email for a verification link.",
+      );
+      router.push("/");
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        if (error?.response?.data?.message) {
+          toast.error(error?.response?.data?.message);
+        }
       } else {
-        // Network error
-        console.error(error);
-        toast.error("Network error creating user");
+        console.error("An error occurred:", error);
+        toast.error("An unexpected error occurred");
       }
-    },
-  });
-
-  const onSubmit = (data) => {
-    registerUserMutation.mutate(data);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
@@ -60,6 +55,29 @@ export default function SignUpForm() {
               className="space-y-4 md:space-y-6"
               onSubmit={handleSubmit(onSubmit)}
             >
+              <div>
+                <Input
+                  {...register("name", {
+                    required: "Full name is required",
+                    minLength: {
+                      value: 2,
+                      message: "Name must be at least 2 characters long",
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: "Name must be at most 50 characters long",
+                    },
+                  })}
+                  label="Your full name"
+                  type="text"
+                  variant="bordered"
+                />
+                {errors.name && (
+                  <span className="relative top-2 text-red-500">
+                    {errors.name.message}
+                  </span>
+                )}
+              </div>
               <div>
                 <Input
                   {...register("email", {
@@ -108,8 +126,8 @@ export default function SignUpForm() {
                   </span>
                 )}
               </div>
-              <div>
-                <Checkbox size="md" defaultSelected>
+              {/* <div>
+                <Checkbox size="md">
                   I accept the
                   <Link
                     className="ml-2 font-medium text-primary-600 hover:underline dark:text-primary-500"
@@ -118,22 +136,20 @@ export default function SignUpForm() {
                     Terms and Conditions
                   </Link>
                 </Checkbox>
-              </div>
+              </div> */}
 
               <Button
                 type="submit"
                 size="lg"
                 color="primary"
                 className={`w-full rounded-lg bg-primary-600 text-center text-sm font-medium text-white hover:bg-primary-700${
-                  registerUserMutation.isPending
+                  isLoading
                     ? "hover: cursor-not-allowed bg-primary-600 hover:bg-primary-600 focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
                     : ""
                 }`}
-                isDisabled={registerUserMutation.isPending}
+                isDisabled={isLoading}
               >
-                {registerUserMutation.isPending
-                  ? "Loading..."
-                  : "Create an account"}
+                {isLoading ? "Loading..." : "Create an account"}
               </Button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?&nbsp;
@@ -141,7 +157,7 @@ export default function SignUpForm() {
                   href="/"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                   Login here
+                  Login here
                 </Link>
               </p>
             </form>

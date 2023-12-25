@@ -15,10 +15,10 @@ import Link from "next/link";
 import UserAvatar from "./UserAvatar";
 import { BsPencilSquare } from "react-icons/bs";
 import { usePathname } from "next/navigation";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  // const isAuthenticated = useSelector((state) => state.token !== null);
+  const isLoggedIn = useSelector((state) => !!state.auth.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -40,26 +40,25 @@ export default function Header() {
 
   return (
     <>
-      {!hideMainHeader && (
-        <Navbar
-          shouldHideOnScroll
-          onMenuOpenChange={setIsMenuOpen}
-          classNames={{
-            base: "border-b",
-            wrapper: "max-w-[1250px]",
-          }}
-        >
-          <NavbarContent>
-            <NavbarMenuToggle
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              className="sm:hidden"
-            />
-            <NavbarBrand as={Link} href="/">
-              <p className="font-bold text-inherit">EaxyAUTH</p>
-            </NavbarBrand>
-          </NavbarContent>
+      <Navbar
+        shouldHideOnScroll
+        onMenuOpenChange={setIsMenuOpen}
+        classNames={{
+          base: "border-b",
+          wrapper: "max-w-[1250px]",
+        }}
+      >
+        <NavbarContent>
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="sm:hidden"
+          />
+          <NavbarBrand as={Link} href="/">
+            <p className="font-bold text-inherit">EaxyAUTH</p>
+          </NavbarBrand>
+        </NavbarContent>
 
-          {/* <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+        {/* <NavbarContent className="hidden gap-4 sm:flex" justify="center">
         <NavbarItem>
           <Link color="foreground" href="#">
             Features
@@ -76,8 +75,10 @@ export default function Header() {
           </Link>
         </NavbarItem>
       </NavbarContent> */}
-          <NavbarContent justify="end">
-            {/* <UserAvatar /> */}
+        <NavbarContent justify="end">
+          {isLoggedIn ? (
+            <UserAvatar />
+          ) : (
             <>
               <NavbarItem className="hidden lg:flex">
                 <Link href="/">Login</Link>
@@ -88,29 +89,29 @@ export default function Header() {
                 </Button>
               </NavbarItem>
             </>
-          </NavbarContent>
-          <NavbarMenu>
-            {menuItems.map((item, index) => (
-              <NavbarMenuItem key={`${item}-${index}`}>
-                <Link
-                  color={
-                    index === 2
-                      ? "primary"
-                      : index === menuItems.length - 1
-                        ? "danger"
-                        : "foreground"
-                  }
-                  className="w-full"
-                  href="#"
-                  size="lg"
-                >
-                  {item}
-                </Link>
-              </NavbarMenuItem>
-            ))}
-          </NavbarMenu>
-        </Navbar>
-      )}
+          )}
+        </NavbarContent>
+        <NavbarMenu>
+          {menuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link
+                color={
+                  index === 2
+                    ? "primary"
+                    : index === menuItems.length - 1
+                      ? "danger"
+                      : "foreground"
+                }
+                className="w-full"
+                href="#"
+                size="lg"
+              >
+                {item}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </NavbarMenu>
+      </Navbar>
     </>
   );
 }

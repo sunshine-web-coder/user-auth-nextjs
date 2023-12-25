@@ -17,7 +17,7 @@ export async function GET(request, { params }) {
 
     // If the user is not found, return a 404 response
     if (!user) {
-      return NextResponse.json("User not found", { status: 404 });
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
     // Return the user data in the response
@@ -27,5 +27,3 @@ export async function GET(request, { params }) {
     return NextResponse.json(error, { status: 500 });
   }
 }
-
-

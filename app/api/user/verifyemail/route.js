@@ -15,8 +15,6 @@ export async function POST(request) {
       verifyTokenExpiry: { $gt: Date.now() },
     });
 
-    console.log(user)
-
     if (!user) {
       return NextResponse.json({ message: "Invalid token or Email is already verified" }, { status: 400 });
     }

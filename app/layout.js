@@ -1,11 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NextUiProvider from "@/components/providers/NextUiProvider";
-import Header from "@/components/header/Header";
-import TanstackQueryProvider from "@/components/providers/TanstackQueryProvider";
 import ReduxProvider from "@/components/providers/ReduxProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "@/components/RouteProtection";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,15 +17,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <TanstackQueryProvider>
           <ReduxProvider>
-            <NextUiProvider>
-              <ToastContainer />
-              <Header />
-              {children}
-            </NextUiProvider>
+            <ProtectedRoute>
+              <NextUiProvider>
+                <ToastContainer />
+                {children}
+              </NextUiProvider>
+            </ProtectedRoute>
           </ReduxProvider>
-        </TanstackQueryProvider>
       </body>
     </html>
   );

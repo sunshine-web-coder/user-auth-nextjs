@@ -3,6 +3,7 @@ import connectMongoDB from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request, { params }) {
+  
   const { id } = params;
 
   await connectMongoDB()

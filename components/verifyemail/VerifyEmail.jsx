@@ -66,7 +66,7 @@ export default function VerifyEmail() {
       )}
 
       {error && (
-        <div className="mx-auto mt-20 flex h-[302px] max-w-[528px] flex-col items-center justify-center gap-2 border bg-white p-4 shadow">
+        <div className="mx-auto mt-20 flex h-[302px] max-w-[608px] flex-col items-center justify-center gap-2 border bg-white p-4 shadow">
           <svg
             height="70"
             viewBox="0 0 32 32"
@@ -80,8 +80,8 @@ export default function VerifyEmail() {
               <path d="m0 0h32v32h-32z" />
             </g>
           </svg>
-          <h5 className="text-xl font-semibold">
-            Invalid Token or Email is already verified.
+          <h5 className="text-xl text-center font-semibold">
+          Sorry! You seem to have an invalid or expired invite code.
           </h5>
           <Link
             href="/"

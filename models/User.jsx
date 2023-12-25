@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      required: true,
     },
     email: {
       type: String,
@@ -18,6 +19,9 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    phoneNumber: {
+      type: String,
     },
     profileImage: {
       type: String,
@@ -41,6 +45,32 @@ const userSchema = new mongoose.Schema(
     },
     forgotPasswordExpiry: {
       type: Date,
+    },
+    social: {
+      facebook: {
+        type: String,
+      },
+      twitter: {
+        type: String,
+      },
+      instagram: {
+        type: String,
+      },
+      linkedin: {
+        type: String,
+      },
+      github: {
+        type: String,
+      },
+    },
+    nationality: {
+      type: String,
+    },
+    bio: {
+      type: String,
+    },
+    dateOfBirth: {
+      type: String,
     },
   },
   {

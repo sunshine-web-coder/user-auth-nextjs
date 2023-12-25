@@ -1,16 +1,19 @@
 "use client";
 
 import { Button, Checkbox, Input } from "@nextui-org/react";
-import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { loginSuccess, setUser } from "@/redux/actions";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 export default function SignUpForm() {
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
@@ -18,29 +21,45 @@ export default function SignUpForm() {
   } = useForm();
 
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const router = useRouter();
 
-  const loginUserMutation = useMutation({
-    mutationFn: (formData) => {
-      return axios.post(`http://localhost:3000/api/user/login`, formData);
-    },
-    onSuccess: () => {
-      toast.success("You logged in successfully!");
-    },
-    onError: (error) => {
-      if (error?.response?.data === "Invalid credentials") {
-        toast.error("Invalid email or password.");
-      } else {
-        // Network error
-        console.error(error);
-        toast.error("Network error creating user");
-      }
-    },
-  });
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+    try {
+      // Make an API request to your login endpoint
+      const response = await axios.post(
+        "http://localhost:3000/api/user/login",
+        data,
+      );
 
-  const onSubmit = (data) => {
-    loginUserMutation.mutate(data);
+      const { accessToken, refreshToken, user } = response.data;
+
+      // Dispatch actions on successful login
+      dispatch(loginSuccess(accessToken, refreshToken));
+      dispatch(setUser(user));
+
+      toast.success("You logged in successfully!");
+      router.push("/dashboard/user");
+    } catch (error) {
+      // Handle any other errors that may occur during the API request
+      if (error?.response?.status === 401) {
+        if (error?.response?.data?.message === "Email not verified") {
+          toast.error(
+            "Email not verified, please check your mail for the verification link sent to you.",
+          );
+        } else {
+          // Handle other 401 errors
+          toast.error("Invalid credentials");
+        }
+      } else {
+        console.error("Error during login:", error);
+        toast.error("An unexpected error occurred", { position: "top-right" });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -120,9 +139,9 @@ export default function SignUpForm() {
                 size="lg"
                 type="submit"
                 className={`w-full rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
-                isDisabled={loginUserMutation.isPending}
+                isDisabled={isLoading}
               >
-                {loginUserMutation.isPending ? "Logging in..." : "Login"}
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}

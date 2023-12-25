@@ -1,3 +1,4 @@
+import sendEmail from "@/helpers/mailer/EmailVerify";
 import User from "@/models/User";
 import connectMongoDB from "@/utils/db";
 import bcrypt from "bcryptjs";
@@ -15,7 +16,15 @@ export async function POST(request) {
 
     // If the user does not exist, return an error
     if (!user) {
-      return NextResponse.json("Invalid credentials", { status: 401 });
+      return NextResponse.json ({message: 'Invalid credentials'}, {status: 401});
+    }
+
+    // Check if the email is verified
+    if (!user.isEmailVerified) {
+      // Resend verification email
+      await sendEmail(email);
+
+      return NextResponse.json ({message: 'Email not verified'}, {status: 401});
     }
 
     // Check if the password is correct
@@ -23,7 +32,7 @@ export async function POST(request) {
 
     // If the password is not valid, return an error
     if (!isPasswordValid) {
-      return NextResponse.json("Invalid credentials", { status: 401 });
+      return NextResponse.json ({message: 'Invalid credentials'}, {status: 401});
     }
 
     // Exclude the password from the user data
@@ -34,7 +43,7 @@ export async function POST(request) {
       { userId: user._id },
       process.env.JWT_ACCESS_SECRET,
       {
-        expiresIn: "15m", // Set the expiration time for the access token
+        expiresIn: "1h", // Set the expiration time for the access token
       },
     );
 

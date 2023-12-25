@@ -1,4 +1,4 @@
-import { sendEmail } from "@/helpers/mailer";
+import sendForgotPasswordEmail from "@/helpers/mailer/passwordReset";
 import User from "@/models/User";
 import connectMongoDB from "@/utils/db";
 import { NextResponse } from "next/server";
@@ -7,9 +7,7 @@ export async function POST(request) {
   await connectMongoDB();
 
   try {
-    const reqBody = await request.json();
-
-    const { email } = reqBody;
+    const { email } = await request.json();
 
     const existingUser = await User.findOne({ email: email });
 
@@ -20,11 +18,11 @@ export async function POST(request) {
       );
     }
 
-    // Send verification email
-    await sendEmail({ email, emailType: "RESET", id: existingUser._id });
+    // Call the sendForgotPasswordEmail function
+    await sendForgotPasswordEmail(email);
 
     return NextResponse.json(
-      { message: "Check your email for a link to reset your password" },
+      { message: "Reset password email sent successfully" },
       { status: 200 },
     );
   } catch (error) {
