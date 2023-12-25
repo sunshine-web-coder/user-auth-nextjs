@@ -91,7 +91,6 @@ export default function UserProfile() {
   
     try {
       const imageUrl = await updateUserProfileImage(user.slug, user._id, imageFile, accessToken);
-      console.log(imageUrl);
   
       dispatch(updateUser(imageUrl.user));
   
