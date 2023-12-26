@@ -28,14 +28,20 @@ export default function UserDashboard() {
               />
             </div>
             <p className="mt-3">{user?.name}</p>
-            <p className="mt-3 text-center">{user?.profession}</p>
-            <div
-              className={`text-center mx-auto mt-3 mb-3 max-w-lg text-sm overflow-hidden ${
-                isBioCollapsed ? "h-16" : "max-h-96"
-              } transition-max-height duration-300 ease-in-out`}
-            >
-              {user?.bio}
-            </div>
+
+            {user?.profession && (
+              <p className="mt-3 text-center">{user?.profession}</p>
+            )}
+
+            {user?.bio && (
+              <div
+                className={`mx-auto mb-3 mt-3 max-w-lg overflow-hidden text-center text-sm ${
+                  isBioCollapsed ? "max-h-16" : "max-h-96"
+                } transition-max-height duration-300 ease-in-out`}
+              >
+                {user?.bio}
+              </div>
+            )}
             {user?.bio?.length > 100 && (
               <button
                 className="font-semibold text-blue-500 hover:underline"
@@ -44,13 +50,17 @@ export default function UserDashboard() {
                 {isBioCollapsed ? "Read more" : "Read less"}
               </button>
             )}
-            <div className="mt-3 flex gap-3">
+            <div className="mt-3 flex items-center gap-3">
               {socialLinks.map((link) => (
-                <div key={link.key}>
-                  <a target="_blank" href={user?.social?.[link.key]}>
-                    {user?.social?.[link.key] && link.icon}
-                  </a>
-                </div>
+                <>
+                  {user?.social?.[link.key] && (
+                    <div key={link.key}>
+                      <a target="_blank" href={user?.social?.[link.key]}>
+                        {user?.social?.[link.key] && link.icon}
+                      </a>
+                    </div>
+                  )}
+                </>
               ))}
             </div>
             <div className="mt-4">

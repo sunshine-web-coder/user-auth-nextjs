@@ -108,7 +108,7 @@ export default function EditProfile({ handleDrawerClose }) {
           placeholder="MM/DD/YYYY"
           defaultValue={user?.dateOfBirth && new Date(user?.dateOfBirth)
             ? new Date(user?.dateOfBirth).toLocaleDateString("en-US")
-            : "not added"}
+            : ""}
         />
       </div>
 
