@@ -47,7 +47,7 @@ export default function SignUpForm() {
   return (
     <div className="flex h-screen items-center justify-center bg-white">
       {/* Left: Image */}
-      <div className="hidden h-screen w-1/2 lg:block">
+      <div className="bg-[#F1F3F6] hidden h-screen w-1/2 md:block">
         <Image
           priority={true}
           width={1000}
@@ -58,7 +58,7 @@ export default function SignUpForm() {
         />
       </div>
       {/* Right: Login Form */}
-      <div className="sm:20 w-1/2">
+      <div className="w-full md:w-1/2">
         <div className="mx-auto max-w-[500px] space-y-4 p-6 sm:p-8 md:space-y-6">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
             Create and account
