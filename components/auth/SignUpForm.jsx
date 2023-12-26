@@ -2,6 +2,7 @@
 
 import { registerUser } from "@/constants/ApiService";
 import { Button, Checkbox, Input } from "@nextui-org/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -44,17 +45,29 @@ export default function SignUpForm() {
     }
   };
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-        <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
-          <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-              Create and account
-            </h1>
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(onSubmit)}
-            >
+    <div className="flex h-screen items-center justify-center bg-white">
+      {/* Left: Image */}
+      <div className="hidden h-screen w-1/2 lg:block">
+        <Image
+          priority={true}
+          width={1000}
+          height={1000}
+          src="https://i.imgur.com/iUNGvCd.png"
+          alt="Placeholder Image"
+          className="h-full w-full -scale-x-100 transform object-cover"
+        />
+      </div>
+      {/* Right: Login Form */}
+      <div className="sm:20 w-1/2">
+        <div className="mx-auto max-w-[500px] space-y-4 p-6 sm:p-8 md:space-y-6">
+          <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+            Create and account
+          </h1>
+          <form
+            className="space-y-4 md:space-y-6"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className="mt-[50px] flex flex-col gap-[25px]">
               <div>
                 <Input
                   {...register("name", {
@@ -70,7 +83,10 @@ export default function SignUpForm() {
                   })}
                   label="Your full name"
                   type="text"
+                  placeholder="your full name"
+                  labelPlacement="outside"
                   variant="bordered"
+                  size="lg"
                 />
                 {errors.name && (
                   <span className="relative top-2 text-red-500">
@@ -90,6 +106,9 @@ export default function SignUpForm() {
                   label="Email Address"
                   type="email"
                   variant="bordered"
+                  placeholder="you@example.com"
+                  labelPlacement="outside"
+                  size="lg"
                 />
                 {errors.email && (
                   <span className="relative top-2 text-red-500">
@@ -97,7 +116,6 @@ export default function SignUpForm() {
                   </span>
                 )}
               </div>
-
               <div>
                 <Input
                   {...register("password", {
@@ -106,6 +124,9 @@ export default function SignUpForm() {
                   label="Password"
                   type={isVisible ? "text" : "password"}
                   variant="bordered"
+                  placeholder="Password"
+                  labelPlacement="outside"
+                  size="lg"
                   endContent={
                     <button
                       className="relative top-[-5px] focus:outline-none"
@@ -126,11 +147,13 @@ export default function SignUpForm() {
                   </span>
                 )}
               </div>
-              {/* <div>
+            </div>
+
+            {/* <div>
                 <Checkbox size="md">
                   I accept the
                   <Link
-                    className="ml-2 font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    className="ml-2 font-medium text-[#EA454C] hover:underline dark:text-primary-500"
                     href=""
                   >
                     Terms and Conditions
@@ -138,32 +161,31 @@ export default function SignUpForm() {
                 </Checkbox>
               </div> */}
 
-              <Button
-                type="submit"
-                size="lg"
-                color="primary"
-                className={`w-full rounded-lg bg-primary-600 text-center text-sm font-medium text-white hover:bg-primary-700${
-                  isLoading
-                    ? "hover: cursor-not-allowed bg-primary-600 hover:bg-primary-600 focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
-                    : ""
-                }`}
-                isDisabled={isLoading}
+            <Button
+              type="submit"
+              size="lg"
+              color="primary"
+              className={`w-full rounded-lg bg-[#EA454C] text-center text-sm font-medium text-white hover:bg-[#EA454C]${
+                isLoading
+                  ? "hover: cursor-not-allowed bg-[#EA454C] hover:bg-[#EA454C] focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
+                  : ""
+              }`}
+              isDisabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "Create an account"}
+            </Button>
+            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+              Already have an account?&nbsp;
+              <Link
+                href="/"
+                className="font-medium text-[#EA454C] hover:underline dark:text-primary-500"
               >
-                {isLoading ? "Loading..." : "Create an account"}
-              </Button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?&nbsp;
-                <Link
-                  href="/"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Login here
-                </Link>
-              </p>
-            </form>
-          </div>
+                Login here
+              </Link>
+            </p>
+          </form>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

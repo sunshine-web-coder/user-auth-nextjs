@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const BASE_URL = "https://user-auth-nextjs-mauve.vercel.app/api";
-// const BASE_URL = "http://localhost:3000/api";
 
 const apiService = axios.create({
   baseURL: BASE_URL,

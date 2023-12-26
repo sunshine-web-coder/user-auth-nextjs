@@ -34,7 +34,7 @@ export default function UserAvatar() {
             </p>
             <hr className="mb-3 mt-3" />
             <Button
-              className="flex h-[35px] items-start justify-start rounded-md bg-transparent p-2 text-left hover:bg-gray-200 hover:font-semibold"
+              className="flex h-[35px] items-start justify-start rounded-md bg-transparent p-2 text-left hover:bg-[#EA454C]/10 hover:font-semibold"
               onClick={handleLogout}
             >
               Logout

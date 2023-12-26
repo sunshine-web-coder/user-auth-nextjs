@@ -52,7 +52,7 @@ export default function VerifyEmail() {
           <p>Your account has been successfully verified</p>
           <Link
             href="/"
-            className="mt-3 rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700"
+            className="mt-3 rounded-lg bg-[#EA454C] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#EA454C]"
           >
             Process to Login
           </Link>
@@ -79,7 +79,7 @@ export default function VerifyEmail() {
           </h5>
           <Link
             href="/"
-            className="mt-3 rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700"
+            className="mt-3 rounded-lg bg-[#EA454C] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#EA454C]"
           >
             Process to Login
           </Link>

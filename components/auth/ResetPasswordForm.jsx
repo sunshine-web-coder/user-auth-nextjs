@@ -77,7 +77,7 @@ export default function ResetPasswordForm() {
           </h5>
           <Link
             href="/forgot-password"
-            className="mt-3 rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700"
+            className="mt-3 rounded-lg bg-[#EA454C] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#EA454C]"
           >
             Try again!
           </Link>
@@ -158,9 +158,9 @@ export default function ResetPasswordForm() {
                   type="submit"
                   size="lg"
                   color="primary"
-                  className={`w-full rounded-lg bg-primary-600 text-center text-sm font-medium text-white hover:bg-primary-700${
+                  className={`w-full rounded-lg bg-[#EA454C] text-center text-sm font-medium text-white hover:bg-[#EA454C]${
                     isLoading
-                      ? "hover: cursor-not-allowed bg-primary-600 hover:bg-primary-600 focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
+                      ? "hover: cursor-not-allowed bg-[#EA454C] hover:bg-[#EA454C] focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
                       : ""
                   }`}
                   isDisabled={isLoading}
@@ -169,11 +169,11 @@ export default function ResetPasswordForm() {
                     ? "Resetting..."
                     : "Reset Password"}
                 </Button>
-                <p className="text-center text-sm font-light text-gray-500 dark:text-gray-400">
+                <p className="text-center text-sm font-light text-[#EA454C]">
                   Remember your password? &nbsp;
                   <Link
                     href="/"
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    className="font-medium text-[#EA454C] hover:underline"
                   >
                     Login
                   </Link>

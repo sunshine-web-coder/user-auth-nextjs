@@ -64,7 +64,7 @@ export default function UserDashboard() {
               ))}
             </div>
             <div className="mt-4">
-              <Button color="primary" as={Link} href="/dashboard/user/profile">
+              <Button color="primary" className="bg-[#EA454C]" as={Link} href="/dashboard/user/profile">
                 Edit Profile
               </Button>
             </div>

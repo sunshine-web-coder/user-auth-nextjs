@@ -159,7 +159,7 @@ export default function UserProfile() {
                 <Button
                   color="primary"
                   type="submit"
-                  className="bg-gray-900"
+                  className="bg-[#EA454C]"
                   isDisabled={isLoading}
                 >
                   {isLoading ? "Uploading..." : "Upload New Avatar"}

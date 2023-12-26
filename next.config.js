@@ -12,6 +12,11 @@ const nextConfig = {
           hostname: 'i.imgur.com',
           pathname: '/**',
         },
+        {
+          protocol: 'https',
+          hostname: 'images.unsplash.com',
+          pathname: '/**',
+        },
       ],
     },
   };

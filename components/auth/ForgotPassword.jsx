@@ -74,9 +74,9 @@ export default function ForgotPassword() {
               type="submit"
               size="lg"
               color="primary"
-              className={`w-full rounded-lg bg-primary-600 text-center text-sm font-medium text-white hover:bg-primary-700${
+              className={`w-full rounded-lg bg-[#EA454C] text-center text-sm font-medium text-white hover:bg-[#EA454C]${
                 isLoading
-                  ? "hover: cursor-not-allowed bg-primary-600 hover:bg-primary-600 focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
+                  ? "hover: cursor-not-allowed bg-[#EA454C] hover:bg-[#EA454C] focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
                   : ""
               }`}
               isDisabled={isLoading}
@@ -84,7 +84,7 @@ export default function ForgotPassword() {
               {isLoading ? "Sending..." : "Send Link"}
             </Button>
           </form>
-          <p className="mt-4 text-blue-500">
+          <p className="mt-4 text-[#EA454C]">
             <span>Remember your password? </span>
             <Link className="font-semibold hover:underline" href="/">
               Login

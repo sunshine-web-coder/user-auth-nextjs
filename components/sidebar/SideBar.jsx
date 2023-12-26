@@ -21,7 +21,7 @@ export default function SideBar() {
                 key={index}
                 href={link.slug}
                 className={`flex items-center gap-3 rounded-lg hover:font-semibold px-3 py-2 text-gray-500 transition-all ${
-                  pathname === link.slug ? "bg-gray-900 text-white" : "bg-transparent hover:bg-gray-900/5"
+                  pathname === link.slug ? "bg-[#EA454C] text-white" : "bg-transparent hover:bg-[#EA454C]/10"
                 }`}
               >
                 {link.icon}
@@ -31,7 +31,7 @@ export default function SideBar() {
             
           </nav>
           <Button
-              className="flex absolute bottom-32 w-full h-14 items-center justify-start gap-3 rounded-lg bg-transparent hover:font-semibold px-3 py-2 text-gray-500 transition-all hover:bg-gray-900/5"
+              className="flex absolute bottom-32 w-full h-12 items-center justify-start gap-3 rounded-lg bg-transparent hover:font-semibold px-3 py-2 text-gray-500 transition-all hover:bg-[#EA454C]/10"
               onClick={handleLogout}
             >
               <LogOutIcon />
