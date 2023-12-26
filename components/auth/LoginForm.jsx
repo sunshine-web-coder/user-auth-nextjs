@@ -25,7 +25,7 @@ export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const router = useRouter();
-
+ 
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {

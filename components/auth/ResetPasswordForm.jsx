@@ -24,28 +24,34 @@ export default function ResetPasswordForm() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const [isLoading, setIsLoading] = useState(false);
   const resetToken = searchParams.get("token");
 
   const password = watch("password");
 
   const onSubmit = async (data) => {
+    setIsLoading(true)
     try {
       await resetPassword(resetToken, data.password);
       toast.success("Password reset successfully!");
+      setIsLoading(false)
       router.push("/")
     } catch (error) {
       if (error.response && error.response.status === 400) {
         // Invalid or expired token
         toast.error("Invalid or expired reset token.");
         setError(true);
+        setIsLoading(false)
       } else {
         // Show a generic error message for other errors
         toast.error("An error occurred during password reset.");
 
         // Log the detailed error for debugging
         console.error(error);
+        setIsLoading(false)
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -153,14 +159,14 @@ export default function ResetPasswordForm() {
                   size="lg"
                   color="primary"
                   className={`w-full rounded-lg bg-primary-600 text-center text-sm font-medium text-white hover:bg-primary-700${
-                    resetUserPasswordMutation.isPending
+                    isLoading
                       ? "hover: cursor-not-allowed bg-primary-600 hover:bg-primary-600 focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
                       : ""
                   }`}
-                  isDisabled={resetUserPasswordMutation.isPending}
+                  isDisabled={isLoading}
                 >
-                  {resetUserPasswordMutation.isPending
-                    ? "Reseting..."
+                  {isLoading
+                    ? "Resetting..."
                     : "Reset Password"}
                 </Button>
                 <p className="text-center text-sm font-light text-gray-500 dark:text-gray-400">
