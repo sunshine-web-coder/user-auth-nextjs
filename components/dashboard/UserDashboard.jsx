@@ -36,7 +36,7 @@ export default function UserDashboard() {
             >
               {user?.bio}
             </div>
-            {user?.bio.length > 100 && (
+            {user?.bio?.length > 100 && (
               <button
                 className="font-semibold text-blue-500 hover:underline"
                 onClick={toggleBio}

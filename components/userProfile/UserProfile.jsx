@@ -179,7 +179,9 @@ export default function UserProfile() {
                       </label>
                       {userData.key === "dateOfBirth" ? (
                         <span className="text-sm">
-                        {new Date(user?.[userData.key]).toLocaleDateString("en-US")}
+                          {user?.[userData.key] && new Date(user?.[userData.key])
+                          ? new Date(user?.[userData.key]).toLocaleDateString("en-US")
+                          : "not added"}
                         </span>
                         ) : (
                           <span className="text-sm">{user?.[userData.key] || "not added"}</span>

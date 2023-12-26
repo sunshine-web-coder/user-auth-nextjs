@@ -76,7 +76,8 @@ export default function EditProfile({ handleDrawerClose }) {
           label="Your profession"
           type="text"
           variant="bordered"
-          defaultValue={user?.profession || "add profession"}
+          defaultValue={user?.profession}
+          placeholder="Add your profession"
         />
         {errors.profession && (
           <span className="relative top-2 text-red-500">
@@ -105,7 +106,9 @@ export default function EditProfile({ handleDrawerClose }) {
           type="text"
           variant="bordered"
           placeholder="MM/DD/YYYY"
-          defaultValue={new Date(user?.dateOfBirth).toLocaleDateString("en-US")}
+          defaultValue={user?.dateOfBirth && new Date(user?.dateOfBirth)
+            ? new Date(user?.dateOfBirth).toLocaleDateString("en-US")
+            : "not added"}
         />
       </div>
 
