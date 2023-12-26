@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
+import { linkResetPassword } from "@/constants/ApiService";
 import { Button, Input } from "@nextui-org/react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import React from "react";
+import Link from "next/link";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -15,30 +14,27 @@ export default function ForgotPassword() {
     handleSubmit,
   } = useForm();
 
-  const router = useRouter();
-  
-  const forgotPasswordLinkMutation = useMutation({
-    mutationFn: (formData) => {
-      return axios.post(`http://localhost:3000/api/user/link_resetpassword`, formData);
-    },
-    onSuccess: () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      await linkResetPassword(data);
+
       toast.success("Password reset link sent successfully!");
-    },
-    onError: (error) => {
-      if (error?.response?.data?.message === "User with this email not found!") {
-        toast.error("User with this email not found!");
+    } catch (error) {
+      if (error?.response?.status) {
+        if (error?.response?.data?.message) {
+          toast.error(error?.response?.data?.message);
+        }
       } else {
-        // Network error
-        console.error(error);
-        toast.error("Network error creating user");
+        console.error("An error occurred:", error);
+        toast.error("An unexpected error occurred");
       }
-    },
-  });
-
-  const onSubmit = (data) => {
-    forgotPasswordLinkMutation.mutate(data);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -75,21 +71,25 @@ export default function ForgotPassword() {
               )}
             </div>
             <Button
-                type="submit"
-                size="lg"
-                color="primary"
-                className={`w-full rounded-lg bg-primary-600 text-center text-sm font-medium text-white hover:bg-primary-700${
-                  forgotPasswordLinkMutation.isPending
-                    ? "hover: cursor-not-allowed bg-primary-600 hover:bg-primary-600 focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
-                    : ""
-                }`}
-                isDisabled={forgotPasswordLinkMutation.isPending}
-              >
-                {forgotPasswordLinkMutation.isPending
-                  ? "Sending..."
-                  : "Send Link"}
-              </Button>
+              type="submit"
+              size="lg"
+              color="primary"
+              className={`w-full rounded-lg bg-primary-600 text-center text-sm font-medium text-white hover:bg-primary-700${
+                isLoading
+                  ? "hover: cursor-not-allowed bg-primary-600 hover:bg-primary-600 focus:outline-none disabled:opacity-50 hover:disabled:opacity-50"
+                  : ""
+              }`}
+              isDisabled={isLoading}
+            >
+              {isLoading ? "Sending..." : "Send Link"}
+            </Button>
           </form>
+          <p className="mt-4 text-blue-500">
+            <span>Remember your password? </span>
+            <Link className="font-semibold hover:underline" href="/">
+              Login
+            </Link>
+          </p>
         </div>
       </div>
     </section>

@@ -87,6 +87,21 @@ export default function EditProfile({ handleDrawerClose }) {
 
       <div>
         <Input
+          {...register("profession")}
+          label="Your profession"
+          type="text"
+          variant="bordered"
+          defaultValue={user?.profession || "add profession"}
+        />
+        {errors.profession && (
+          <span className="relative top-2 text-red-500">
+            {errors.profession.message}
+          </span>
+        )}
+      </div>
+
+      <div>
+        <Input
           {...register("phoneNumber")}
           label="Phone Number"
           type="text"
@@ -111,7 +126,6 @@ export default function EditProfile({ handleDrawerClose }) {
 
       <div>
         <Autocomplete
-          className="max-w-xs"
           label="Select country"
           variant="bordered"
           defaultItems={countriesData}

@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profession: {
+      type: String,
+    },
     phoneNumber: {
       type: String,
     },

@@ -7,12 +7,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
     <>
       <DashboardHeader />
       <div className="flex pt-12">
         <SideBar />
-        <div className="pl-[320px] w-full">{children}</div>
+        <div className="lg:pl-[320px] w-full">{children}</div>
       </div>
     </>
   );

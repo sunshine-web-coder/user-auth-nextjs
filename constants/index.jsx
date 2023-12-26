@@ -1,3 +1,5 @@
+import { FacebookIcon, GithubIcon, InstagramIcon, LinkedinIcon, TwitterIcon } from "@/components/svgIcons/SvgIcons";
+
 // LIST OF COUNTRIES
 export const countriesData = [
   {
@@ -1089,16 +1091,17 @@ export const countriesData = [
 
 // SOCIALS FROM DB
 export const socialLinks = [
-  { name: "Facebook", key: "facebook" },
-  { name: "Twitter", key: "twitter" },
-  { name: "Instagram", key: "instagram" },
-  { name: "LinkedIn", key: "linkedin" },
-  { name: "Github", key: "github" },
+  { name: "Facebook", key: "facebook", icon: <FacebookIcon /> },
+  { name: "Twitter", key: "twitter", icon: <TwitterIcon /> },
+  { name: "Instagram", key: "instagram",icon:  <InstagramIcon /> },
+  { name: "LinkedIn", key: "linkedin",icon:  <LinkedinIcon /> },
+  { name: "Github", key: "github",icon:  <GithubIcon /> },
 ];
 // Data from DB
 export const profileDetails = [
   { name: "Full Name", key: "name" },
   { name: "Email", key: "email" },
+  { name: "Your profession", key: "profession" },
   { name: "phone", key: "phoneNumber" },
   { name: "Date of Birth", key: "dateOfBirth" },
   { name: "Nationality", key: "nationality" },

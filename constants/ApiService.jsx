@@ -82,3 +82,13 @@ export const updateUserProfileImage = async (
     throw error;
   }
 };
+
+export const linkResetPassword = async (formData) => {
+  try {
+    const response = await apiService.post("/user/link_resetpassword", formData);
+    return response.data;
+  } catch (error) {
+    // Handle errors
+    throw error;
+  }
+};

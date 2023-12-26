@@ -12,7 +12,7 @@ export default function SideBar() {
   const { handleLogout } = useLogout();
 
   return (
-    <div className="bg-white fixed z-40 hidden w-80 border-r pt-10 lg:block">
+    <div className="bg-white fixed z-40 h-screen hidden w-80 border-r pt-10 lg:block">
       <div className="flex min-h-[500px] flex-col gap-2">
         <div className="flex-1">
           <nav className="grid items-start px-4 text-sm font-medium">
@@ -31,7 +31,7 @@ export default function SideBar() {
             
           </nav>
           <Button
-              className="flex absolute bottom-0 items-start justify-start gap-3 rounded-lg bg-transparent hover:font-semibold px-3 py-2 text-gray-500 transition-all hover:bg-gray-900/5"
+              className="flex absolute bottom-32 w-full h-14 items-center justify-start gap-3 rounded-lg bg-transparent hover:font-semibold px-3 py-2 text-gray-500 transition-all hover:bg-gray-900/5"
               onClick={handleLogout}
             >
               <LogOutIcon />

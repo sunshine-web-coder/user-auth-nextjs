@@ -11,7 +11,7 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ message: "Invalid user ID format" }, { status: 400 });
   }
 
-  const { name, phoneNumber, profileImage, social, nationality, bio, dateOfBirth } = await request.json();
+  const { name, profession, phoneNumber, profileImage, social, nationality, bio, dateOfBirth } = await request.json();
 
   await connectMongoDB();
 
@@ -24,6 +24,7 @@ export async function PUT(request, { params }) {
 
     // Update the fields without changing the slug or email
     user.name = name || user.name;
+    user.profession = profession || user.profession;
     user.phoneNumber = phoneNumber || user.phoneNumber;
     user.profileImage = profileImage || user.profileImage;
     user.nationality = nationality || user.nationality;

@@ -166,7 +166,7 @@ export default function UserProfile() {
                 </Button>
               </div>
             </form>
-            <div className="flex gap-10">
+            <div className="flex gap-10 flex-col md:flex-row">
               <div className="w-full space-y-4 md:space-y-3">
                 {profileDetails.map((userData) => (
                   <div
@@ -182,7 +182,7 @@ export default function UserProfile() {
                         {new Date(user?.[userData.key]).toLocaleDateString("en-US")}
                         </span>
                         ) : (
-                          <span className="text-sm">{user?.[userData.key]}</span>
+                          <span className="text-sm">{user?.[userData.key] || "not added"}</span>
                         )}
                     </div>
                     <div>
