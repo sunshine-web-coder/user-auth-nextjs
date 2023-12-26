@@ -8,11 +8,14 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "@/redux/actions";
 import { toast } from "react-toastify";
+import useLogout from "../Logout";
+import { updateUserById } from "@/constants/ApiService";
 
 export default function EditSocial({ handleDrawerClose }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const accessToken = useSelector((state) => state.auth.accessToken);
+  const { handleLogout } = useLogout();
 
   const {
     register,
@@ -25,25 +28,27 @@ export default function EditSocial({ handleDrawerClose }) {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.put(
-        `http://localhost:3000/api/user/updateUserById/${user._id}`,
-        { social: data },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      // Use updateUserById instead of axios.put
+      const response = await updateUserById( user._id, { social: data }, accessToken );
 
-      dispatch(updateUser(response.data.user));
+      dispatch(updateUser(response.user));
 
-      toast.success("profile updated successfully");
+      toast.success("Social updated successfully");
       setIsLoading(false);
       handleDrawerClose();
     } catch (error) {
-      console.error("An error occurred:", error);
-      toast.error("An unexpected error occurred");
+      if (error?.response?.status === 401) {
+        if (
+          error?.response?.data?.message ===
+          "Token has expired, please login again"
+        ) {
+          toast.error("Token has expired, please login again");
+          handleLogout();
+        }
+      } else {
+        console.error("An error occurred:", error);
+        toast.error("An unexpected error occurred");
+      }
     } finally {
       setIsLoading(false);
     }

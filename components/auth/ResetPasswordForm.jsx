@@ -1,11 +1,10 @@
 "use client";
 
+import { resetPassword } from "@/constants/ApiService";
 import { Button, Input } from "@nextui-org/react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -30,17 +29,12 @@ export default function ResetPasswordForm() {
 
   const password = watch("password");
 
-  const resetUserPasswordMutation = useMutation({
-    mutationFn: ({ password }) => {
-      return axios.post(`http://localhost:3000/api/user/reset_password`, {
-        token: resetToken,
-        password,
-      });
-    },
-    onSuccess: () => {
+  const onSubmit = async (data) => {
+    try {
+      await resetPassword(resetToken, data.password);
       toast.success("Password reset successfully!");
-    },
-    onError: (error) => {
+      router.push("/")
+    } catch (error) {
       if (error.response && error.response.status === 400) {
         // Invalid or expired token
         toast.error("Invalid or expired reset token.");
@@ -52,11 +46,7 @@ export default function ResetPasswordForm() {
         // Log the detailed error for debugging
         console.error(error);
       }
-    },
-  });
-
-  const onSubmit = (data) => {
-    resetUserPasswordMutation.mutate(data);
+    }
   };
 
   return (

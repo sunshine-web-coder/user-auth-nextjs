@@ -1,7 +1,7 @@
 "use client";
 
+import { changePasswordById } from "@/constants/ApiService";
 import { Button, Input } from "@nextui-org/react";
-import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -31,16 +31,7 @@ export default function ChangePassword() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `http://localhost:3000/api/user/changePasswordById/${user._id}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      await changePasswordById(user._id, data, accessToken);
 
       toast.success("Password updated successfully");
       setIsLoading(false);
@@ -49,9 +40,6 @@ export default function ChangePassword() {
       if (error?.response?.status) {
         if (error?.response?.data?.message) {
           toast.error(error?.response?.data?.message);
-        } else {
-          // Handle other 401 errors
-          toast.error("Invalid credentials");
         }
       } else {
         console.error("An error occurred:", error);

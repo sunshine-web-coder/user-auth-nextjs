@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { loginSuccess, setUser } from "@/redux/actions";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import { loginUser } from "@/constants/ApiService";
 
 export default function SignUpForm() {
   const dispatch = useDispatch();
@@ -29,12 +30,9 @@ export default function SignUpForm() {
     setIsLoading(true);
     try {
       // Make an API request to your login endpoint
-      const response = await axios.post(
-        "http://localhost:3000/api/user/login",
-        data,
-      );
+      const response = await loginUser(data)
 
-      const { accessToken, refreshToken, user } = response.data;
+      const { accessToken, refreshToken, user } = response;
 
       // Dispatch actions on successful login
       dispatch(loginSuccess(accessToken, refreshToken));

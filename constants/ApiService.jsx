@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "https://user-auth-nextjs-mauve.vercel.app/api";
 
 const apiService = axios.create({
   baseURL: BASE_URL,
@@ -9,6 +9,7 @@ const apiService = axios.create({
   },
 });
 
+//function and api route to register user
 export const registerUser = async (formData) => {
   try {
     const response = await apiService.post("/user/register", formData);
@@ -19,6 +20,18 @@ export const registerUser = async (formData) => {
   }
 };
 
+//function and api route to login user
+export const loginUser = async (formData) => {
+  try {
+    const response = await apiService.post("/user/login", formData);
+    return response.data;
+  } catch (error) {
+    // Handle errors
+    throw error;
+  }
+};
+
+//function and api route to update user by Id
 export const updateUserProfileImage = async (
   slug,
   userId,
@@ -50,7 +63,7 @@ export const updateUserProfileImage = async (
     //     },
     //   );
     // }
-    
+
     const formData = new FormData();
     formData.append("file", imageFile);
     formData.append(
@@ -83,9 +96,67 @@ export const updateUserProfileImage = async (
   }
 };
 
+//function and api route to send password reset link route
 export const linkResetPassword = async (formData) => {
   try {
-    const response = await apiService.post("/user/link_resetpassword", formData);
+    const response = await apiService.post(
+      "/user/link_resetpassword",
+      formData,
+    );
+    return response.data;
+  } catch (error) {
+    // Handle errors
+    throw error;
+  }
+};
+
+//function and api route to update user by Id
+export const updateUserById = async (userId, updatedData, accessToken) => {
+  try {
+    const response = await apiService.put(
+      `/user/updateUserById/${userId}`,
+      updatedData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    // Handle errors
+    throw error;
+  }
+};
+
+//function and api route to change password by Id
+export const changePasswordById = async (userId, updatedData, accessToken) => {
+  try {
+    const response = await apiService.post(
+      `/user/changePasswordById/${userId}`,
+      updatedData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    // Handle errors
+    throw error;
+  }
+};
+
+//function for password reset
+export const resetPassword = async (token, password) => {
+  try {
+    const response = await apiService.post("/user/reset_password", {
+      token,
+      password,
+    });
     return response.data;
   } catch (error) {
     // Handle errors

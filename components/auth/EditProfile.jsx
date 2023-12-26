@@ -1,11 +1,7 @@
 "use client";
 
-import { Avatar, Button, Checkbox, Input, Textarea } from "@nextui-org/react";
-import axios from "axios";
-
-import { Fragment, useState } from "react";
-import { Combobox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { Avatar, Button, Input, Textarea } from "@nextui-org/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "@/redux/actions";
@@ -13,6 +9,7 @@ import { toast } from "react-toastify";
 import { countriesData } from "@/constants";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import useLogout from "../Logout";
+import { updateUserById } from "@/constants/ApiService";
 
 export default function EditProfile({ handleDrawerClose }) {
   const dispatch = useDispatch();
@@ -31,20 +28,11 @@ export default function EditProfile({ handleDrawerClose }) {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.put(
-        `http://localhost:3000/api/user/updateUserById/${user._id}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      const response = await updateUserById(user._id, data, accessToken);
 
-      dispatch(updateUser(response.data.user));
+      dispatch(updateUser(response.user));
 
-      toast.success("profile updated successfully");
+      toast.success("Profile updated successfully");
       setIsLoading(false);
       handleDrawerClose();
     } catch (error) {
@@ -55,9 +43,6 @@ export default function EditProfile({ handleDrawerClose }) {
         ) {
           toast.error("Token has expired, please login again");
           handleLogout();
-        } else {
-          // Handle other 401 errors
-          toast.error("Invalid credentials");
         }
       } else {
         console.error("An error occurred:", error);
@@ -153,7 +138,7 @@ export default function EditProfile({ handleDrawerClose }) {
           defaultValue={user?.bio}
         />
       </div>
-      
+
       <div className="pt-4">
         <Button
           size="lg"
