@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "https://user-auth-nextjs-mauve.vercel.app/api";
+// const BASE_URL = "http://localhost:3000/api";
 
 const apiService = axios.create({
   baseURL: BASE_URL,
@@ -150,7 +151,7 @@ export const changePasswordById = async (userId, updatedData, accessToken) => {
   }
 };
 
-//function for password reset
+//function and api route to reset password
 export const resetPassword = async (token, password) => {
   try {
     const response = await apiService.post("/user/reset_password", {
@@ -160,6 +161,16 @@ export const resetPassword = async (token, password) => {
     return response.data;
   } catch (error) {
     // Handle errors
+    throw error;
+  }
+};
+
+//function and api route to verify email
+export const verifyEmail = async (token) => {
+  try {
+    const response = await apiService.post("/user/verifyemail", { token });
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };

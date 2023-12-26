@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Make sure to import axios if not already done
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { verifyEmail } from "@/constants/ApiService";
 
 export default function VerifyEmail() {
   const [token, setToken] = useState("");
@@ -12,17 +12,11 @@ export default function VerifyEmail() {
 
   const verifyUserEmail = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:3000/api/user/verifyemail`,
-        { token },
-      );
-
-      if (response.status === 200) {
-        setVerificationSuccess(true);
-        toast.success("Email verified successfully!");
-      }
+      await verifyEmail(token);
+      setVerificationSuccess(true);
+      toast.success("Email verified successfully!");
     } catch (error) {
-      if (error.response.status === 400) {
+      if (error.response && error.response.status === 400) {
         toast.error("Invalid token or Email is already verified.");
         setError(true);
       } else {
@@ -80,8 +74,8 @@ export default function VerifyEmail() {
               <path d="m0 0h32v32h-32z" />
             </g>
           </svg>
-          <h5 className="text-xl text-center font-semibold">
-          Sorry! You seem to have an invalid or expired invite code.
+          <h5 className="text-center text-xl font-semibold">
+            Sorry! You seem to have an invalid or expired invite code.
           </h5>
           <Link
             href="/"
