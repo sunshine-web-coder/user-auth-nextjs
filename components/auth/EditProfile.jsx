@@ -10,6 +10,7 @@ import { countriesData } from "@/constants";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import useLogout from "../Logout";
 import { updateUserById } from "@/constants/ApiService";
+import Cookies from "js-cookie";
 
 export default function EditProfile({ handleDrawerClose }) {
   const dispatch = useDispatch();

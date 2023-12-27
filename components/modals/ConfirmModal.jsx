@@ -9,9 +9,9 @@ import {
 } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 import { deleteUserById } from "@/constants/ApiService";
 import useLogout from "../Logout";
+import Cookies from "js-cookie";
 
 export default function ConfirmModal({ isOpen, onOpenChange }) {
   const user = useSelector((state) => state.auth.user);

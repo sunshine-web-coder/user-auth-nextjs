@@ -20,6 +20,7 @@ import useLogout from "../Logout";
 import { profileDetails, socialLinks } from "@/constants";
 import { updateUserProfileImage } from "@/constants/ApiService";
 import ConfirmModal from "../modals/ConfirmModal";
+import Cookies from "js-cookie";
 
 export default function UserProfile() {
   const dispatch = useDispatch();

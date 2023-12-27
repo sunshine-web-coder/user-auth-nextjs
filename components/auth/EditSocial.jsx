@@ -10,6 +10,7 @@ import { updateUser } from "@/redux/actions";
 import { toast } from "react-toastify";
 import useLogout from "../Logout";
 import { updateUserById } from "@/constants/ApiService";
+import Cookies from "js-cookie";
 
 export default function EditSocial({ handleDrawerClose }) {
   const dispatch = useDispatch();
