@@ -2,6 +2,7 @@
 
 import { changePasswordById } from "@/constants/ApiService";
 import { Button, Input } from "@nextui-org/react";
+import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -10,7 +11,7 @@ import { toast } from "react-toastify";
 
 export default function ChangePassword() {
   const user = useSelector((state) => state.auth.user);
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  const accessToken = Cookies.get("accessToken")
 
   const {
     register,

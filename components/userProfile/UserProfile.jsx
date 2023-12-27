@@ -24,7 +24,7 @@ import ConfirmModal from "../modals/ConfirmModal";
 export default function UserProfile() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  const accessToken = Cookies.get("accessToken")
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isSocialDrawerOpen, setIsSocialDrawerOpen] = useState(false);
   const [previewImg, setPreviewImg] = useState(null);
