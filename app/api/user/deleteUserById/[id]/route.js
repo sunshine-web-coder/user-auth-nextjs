@@ -17,7 +17,7 @@ export async function DELETE(request, { params }) {
     }
 
     return NextResponse.json(
-      { message: "User deleted successfully" },
+      { message: "Account deleted successfully" },
       { status: 200 },
     );
   } catch (error) {

@@ -53,8 +53,8 @@ export default function SignUpForm() {
           width={1000}
           height={1000}
           src="https://i.imgur.com/iUNGvCd.png"
-          alt="Placeholder Image"
-          className="h-full w-full -scale-x-100 transform object-cover"
+          alt="auth image"
+          className="h-screen w-full transform -scale-x-100"
         />
       </div>
       {/* Right: Login Form */}

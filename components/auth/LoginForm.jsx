@@ -1,9 +1,8 @@
 "use client";
 
 import { Button, Checkbox, Input } from "@nextui-org/react";
-import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -12,6 +11,7 @@ import { loginSuccess, setUser } from "@/redux/actions";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { loginUser } from "@/constants/ApiService";
+import Cookies from "js-cookie";
 
 export default function SignUpForm() {
   const dispatch = useDispatch();
@@ -34,8 +34,10 @@ export default function SignUpForm() {
 
       const { accessToken, refreshToken, user } = response;
 
+      Cookies.set('accessToken', accessToken, { secure: true, sameSite: 'strict' });
+      Cookies.set('refreshToken', refreshToken, { secure: true, sameSite: 'strict' });
+
       // Dispatch actions on successful login
-      dispatch(loginSuccess(accessToken, refreshToken));
       dispatch(setUser(user));
 
       toast.success("You logged in successfully!");
@@ -63,14 +65,14 @@ export default function SignUpForm() {
   return (
     <div className="flex h-screen items-center justify-center bg-white">
       {/* Left: Image */}
-      <div className="bg-[#F1F3F6] hidden h-screen w-1/2 md:block">
+      <div className="hidden h-screen w-1/2 bg-[#F1F3F6] md:block">
         <Image
           priority={true}
           width={1000}
           height={1000}
           src="https://i.imgur.com/iUNGvCd.png"
-          alt="Placeholder Image"
-          className="h-full w-full object-cover transform -scale-x-100"
+          alt="auth image"
+          className="h-screen w-full -scale-x-100 transform"
         />
       </div>
       {/* Right: Login Form */}

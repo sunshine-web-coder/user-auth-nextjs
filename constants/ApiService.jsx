@@ -131,6 +131,22 @@ export const updateUserById = async (userId, updatedData, accessToken) => {
   }
 };
 
+// Function and API route to delete user by Id
+export const deleteUserById = async (userId, accessToken) => {
+  try {
+    const response = await apiService.delete(`/user/deleteUserById/${userId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    // Handle errors
+    throw error;
+  }
+};
+
 //function and api route to change password by Id
 export const changePasswordById = async (userId, updatedData, accessToken) => {
   try {

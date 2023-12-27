@@ -3,7 +3,7 @@
 import { socialLinks } from "@/constants";
 import { Avatar, Button } from "@nextui-org/react";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function UserDashboard() {
@@ -52,7 +52,7 @@ export default function UserDashboard() {
             )}
             <div className="mt-3 flex items-center gap-3">
               {socialLinks.map((link) => (
-                <>
+                <React.Fragment key={link.key}>
                   {user?.social?.[link.key] && (
                     <div key={link.key}>
                       <a target="_blank" href={user?.social?.[link.key]}>
@@ -60,11 +60,16 @@ export default function UserDashboard() {
                       </a>
                     </div>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </div>
             <div className="mt-4">
-              <Button color="primary" className="bg-[#EA454C]" as={Link} href="/dashboard/user/profile">
+              <Button
+                color="primary"
+                className="bg-[#EA454C]"
+                as={Link}
+                href="/dashboard/user/profile"
+              >
                 Edit Profile
               </Button>
             </div>

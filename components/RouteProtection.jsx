@@ -1,20 +1,21 @@
-"use client"
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
+"use client";
+import React from "react";
+import { usePathname, redirect } from "next/navigation";
+import Cookies from "js-cookie";
 
 const ProtectedRoute = ({ children }) => {
-    const router = useRouter();
-    const isAuthenticated = useSelector((state) => state.auth.accessToken !== null );
+  const pathname = usePathname();
+  let verify = Cookies.get("accessToken");
 
-    useEffect(() => {
-        // Check if the user is authenticated, redirect to login if not.
-        if (!isAuthenticated) {
-            router.push('/'); // Redirect to the login page.
-        }
-    }, [isAuthenticated, router]);
+  if (verify && pathname === "/" && pathname === "/signup") {
+    redirect("/dashboard/user");
+  }
 
-    return <>{children}</>;
+  if (!verify && pathname.startsWith("/dashboard")) {
+    redirect("/");
+  }
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

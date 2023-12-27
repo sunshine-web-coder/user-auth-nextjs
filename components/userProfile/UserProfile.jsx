@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, Button } from "@nextui-org/react";
+import { Avatar, Button, useDisclosure } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import RightDrawer from "../rightDrawer/RightDrawer";
 import { useState } from "react";
@@ -16,11 +16,10 @@ import { toast } from "react-toastify";
 import copy from "clipboard-copy";
 import { updateUser } from "@/redux/actions";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import useLogout from "../Logout";
 import { profileDetails, socialLinks } from "@/constants";
 import { updateUserProfileImage } from "@/constants/ApiService";
-import Image from "next/image";
+import ConfirmModal from "../modals/confirmModal";
 
 export default function UserProfile() {
   const dispatch = useDispatch();
@@ -31,6 +30,7 @@ export default function UserProfile() {
   const [previewImg, setPreviewImg] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const { handleLogout } = useLogout();
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
   const {
     register,
@@ -46,6 +46,10 @@ export default function UserProfile() {
       console.error("Error copying to clipboard:", error);
       toast.error("Error copying to clipboard:", error);
     }
+  };
+
+  const handleOpenConfirmModal= () => {
+    onOpen();
   };
 
   const handleDrawerOpen = () => {
@@ -73,27 +77,32 @@ export default function UserProfile() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-  
+
     if (!imageFile) {
       toast.error("Please choose a cover photo before uploading.");
       setIsLoading(false);
       return;
     }
-  
+
     const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
     const fileExtension = imageFile.name.split(".").pop().toLowerCase();
-  
+
     if (!allowedExtensions.includes(fileExtension)) {
       toast.error("Please choose a valid image file.");
       setIsLoading(false);
       return;
     }
-  
+
     try {
-      const imageUrl = await updateUserProfileImage(user.slug, user._id, imageFile, accessToken);
-  
+      const imageUrl = await updateUserProfileImage(
+        user.slug,
+        user._id,
+        imageFile,
+        accessToken,
+      );
+
       dispatch(updateUser(imageUrl.user));
-  
+
       toast.success("Image updated successfully");
       setPreviewImg(null);
     } catch (error) {
@@ -114,7 +123,6 @@ export default function UserProfile() {
       setIsLoading(false);
     }
   };
-    
 
   return (
     <div className="grid w-full overflow-hidden">
@@ -166,7 +174,7 @@ export default function UserProfile() {
                 </Button>
               </div>
             </form>
-            <div className="flex gap-10 flex-col md:flex-row">
+            <div className="flex flex-col gap-10 md:flex-row">
               <div className="w-full space-y-4 md:space-y-3">
                 {profileDetails.map((userData) => (
                   <div
@@ -179,13 +187,18 @@ export default function UserProfile() {
                       </label>
                       {userData.key === "dateOfBirth" ? (
                         <span className="text-sm">
-                          {user?.[userData.key] && new Date(user?.[userData.key])
-                          ? new Date(user?.[userData.key]).toLocaleDateString("en-US")
-                          : "not added"}
+                          {user?.[userData.key] &&
+                          new Date(user?.[userData.key])
+                            ? new Date(user?.[userData.key]).toLocaleDateString(
+                                "en-US",
+                              )
+                            : "not added"}
                         </span>
-                        ) : (
-                          <span className="text-sm">{user?.[userData.key] || "not added"}</span>
-                        )}
+                      ) : (
+                        <span className="text-sm">
+                          {user?.[userData.key] || "not added"}
+                        </span>
+                      )}
                     </div>
                     <div>
                       <EditIcon
@@ -234,8 +247,15 @@ export default function UserProfile() {
                 ))}
               </div>
             </div>
+            <div className="mt-10">
+              <Button color="primary" type="submit" className="bg-[#EA454C]"
+              onClick={handleOpenConfirmModal}
+              >
+                DELETE ACCOUNT
+              </Button>
+            </div>
           </div>
-          
+
           <RightDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose}>
             <h2 className="mb-4 text-xl font-bold">Edit Profile</h2>
             <EditProfile handleDrawerClose={handleDrawerClose} />
@@ -244,6 +264,7 @@ export default function UserProfile() {
             <h2 className="mb-4 text-xl font-bold">Edit Socials</h2>
             <EditSocial handleDrawerClose={handleDrawerClose} />
           </RightDrawer>
+          <ConfirmModal isOpen={isOpen} onOpenChange={onOpenChange} />
         </main>
       </div>
     </div>

@@ -20,6 +20,7 @@ export async function middleware(request) {
 
     console.log("Decoded token payload:", decoded);
     request.tokenPayload = decoded;
+    
     return NextResponse.next();
   } catch (err) {
     console.error("Token verification failed:", err);
