@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import useLogout from "../Logout";
 import { profileDetails, socialLinks } from "@/constants";
 import { updateUserProfileImage } from "@/constants/ApiService";
-import ConfirmModal from "../modals/confirmModal";
+import ConfirmModal from "../modals/ConfirmModal";
 
 export default function UserProfile() {
   const dispatch = useDispatch();
